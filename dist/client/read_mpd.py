@@ -9,8 +9,8 @@ import config_dash
 
 # Dictionary to convert size to bits
 SIZE_DICT = {'bits':   1,
-             'Kbits':  1024,
-             'Mbits':  1024*1024,
+             'Kbits':  1000,
+             'Mbits':  1000*1000,
              'bytes':  8,
              'KB':  1024*8,
              'MB': 1024*1024*8,
@@ -155,9 +155,15 @@ def read_mpd(mpd_file, dashplayback):
                         if 'video' in adaptation_set.attrib['mimeType']:
                             if "SegmentSize" in get_tag_name(segment_info.tag):
                                 try:
+                                    #print "-----------------"
+                                    #print float(segment_info.attrib['size'])
+                                    #print "+++++++++++++++++"
                                     segment_size = float(segment_info.attrib['size']) * float(
                                         SIZE_DICT[segment_info.attrib['scale']])
-                                except KeyError, e:
+                                    #print "++++-----------------"
+                                    #print segment_size
+                                    #print "+++-----------------"
+                                except KeyError as e:
                                     config_dash.LOG.error("Error in reading Segment sizes :{}".format(e))
                                     continue
                                 media_object[bandwidth].segment_sizes.append(segment_size)
@@ -165,4 +171,7 @@ def read_mpd(mpd_file, dashplayback):
                                 video_segment_duration = (float(segment_info.attrib['duration'])/float(
                                     segment_info.attrib['timescale']))
                                 config_dash.LOG.debug("Segment Playback Duration = {}".format(video_segment_duration))
+    #print "-----------"
+    #print media_object[bandwidth].segment_sizes
+    #print "-----------"
     return dashplayback, int(video_segment_duration)

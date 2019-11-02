@@ -3,7 +3,7 @@ __author__ = 'pjuluri'
 import config_dash
 
 
-def weighted_dash(bitrates, dash_player, weighted_dwn_rate, curr_bitrate, next_segment_sizes):
+def weighted_dash(bitrates, dash_player, weighted_dwn_rate, curr_bitrate, segment_number, segment_size, segment_download_time, next_segment_sizes):
     """
     Module to predict the next_bitrate using the weighted_dash algorithm
     :param bitrates: List of bitrates
@@ -12,17 +12,24 @@ def weighted_dash(bitrates, dash_player, weighted_dwn_rate, curr_bitrate, next_s
     :param next_segment_sizes: A dict mapping bitrate: size of next segment
     :return: next_bitrate, delay
     """
+    if segment_size == 0:
+        curr_rate = 0
+    else:
+        curr_rate = (segment_size*8)/segment_download_time
+    with open("sara_dash-dl-rate.txt", "a") as outf:
+        outf.write(str(segment_number) + '\t' + str(curr_rate) + '\n') # str(download_rate) + '\n') 
+
     bitrates = [int(i) for i in bitrates]
     bitrates.sort()
     # Waiting time before downloading the next segment
     delay = 0
     next_bitrate = None
-    available_video_segments = dash_player.buffer.qsize() - dash_player.initial_buffer
+    available_video_segments = dash_player.buffer.__len__() - dash_player.initial_buffer
     # If the buffer is less that the Initial buffer, playback remains at th lowest bitrate
     # i.e dash_buffer.current_buffer < dash_buffer.initial_buffer
     available_video_duration = available_video_segments * dash_player.segment_duration
     config_dash.LOG.debug("Buffer_length = {} Initial Buffer = {} Available video = {} seconds, alpha = {}. "
-                          "Beta = {} WDR = {}, curr Rate = {}".format(dash_player.buffer.qsize(),
+                          "Beta = {} WDR = {}, curr Rate = {}".format(dash_player.buffer.__len__(),
                                                                       dash_player.initial_buffer,
                                                                       available_video_duration, dash_player.alpha,
                                                                       dash_player.beta, weighted_dwn_rate,
@@ -84,7 +91,7 @@ def weighted_dash(bitrates, dash_player, weighted_dwn_rate, curr_bitrate, next_s
                         break
         if not next_bitrate:
             next_bitrate = curr_bitrate
-        delay = dash_player.buffer.qsize() - dash_player.beta
+        delay = dash_player.buffer.__len__() - dash_player.beta
         config_dash.LOG.info("Delay:{}".format(delay))
     else:
         next_bitrate = curr_bitrate

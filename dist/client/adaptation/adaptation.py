@@ -18,9 +18,9 @@ def calculate_rate_index(bitrates, curr_rate):
     elif curr_rate > bitrates[-1]:
         return bitrates[-1]
     else:
-        for bitrate, index in enumerate(bitrates[1:]):
+        for index,bitrate in enumerate(bitrates[1:]):
             if bitrates[index-1] < curr_rate < bitrate:
-                return curr_rate
+                return bitrate
 
 
 class WeightedMean:
@@ -45,4 +45,5 @@ class WeightedMean:
         self.segment_info.append((segment_size, segment_download_rate))
         self.weighted_mean_rate = sum([size for size, _ in self.segment_info]) / sum([s/r for s, r in self.segment_info])
         return self.weighted_mean_rate
+
 

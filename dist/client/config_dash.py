@@ -27,7 +27,7 @@ LOG_NAME = 'AStream_log'
 LOG_LEVEL = None
 
 # Set '-' to print to screen
-LOG_FOLDER = "ASTREAM_LOGS/"
+LOG_FOLDER = "/opt/SQUAD/ASTREAM_LOGS/"
 if not os.path.exists(LOG_FOLDER):
     os.makedirs(LOG_FOLDER)
 
@@ -36,6 +36,8 @@ LOG_FILENAME = os.path.join(LOG_FOLDER, 'DASH_RUNTIME_LOG')
 # PLAYBACK_LOG_FILENAME = os.path.join(LOG_FOLDER, strftime('DASH_PLAYBACK_LOG_%Y-%m-%d.%H_%M_%S.csv'))
 # Buffer logs created by dash_buffer.py
 BUFFER_LOG_FILENAME = os.path.join(LOG_FOLDER, strftime('DASH_BUFFER_LOG_%Y-%m-%d.%H_%M_%S.csv'))
+DOWNLOAD_LOG_FILENAME = os.path.join(LOG_FOLDER, strftime('DOWNLOAD_LOG_%Y-%m-%d.%H_%M_%S.csv'))
+SPECTRUM_LOG_FILENAME = os.path.join(LOG_FOLDER, strftime('SPECTRUM_LOG_%Y-%m-%d.%H_%M_%S.csv'))
 LOG_FILE_HANDLE = None
 # To be set by configure_log_file.py
 LOG = None
@@ -50,7 +52,7 @@ JSON_HANDLE['playback_info'] = {'start_time': None,
                                 'down_shifts': 0
                                 }
 # Constants for the BASIC-2 adaptation scheme
-BASIC_THRESHOLD = 10
+BASIC_THRESHOLD = 14
 BASIC_UPPER_THRESHOLD = 1.2
 # Number of segments for moving average
 BASIC_DELTA_COUNT = 5
@@ -66,7 +68,7 @@ RE_BUFFERING_COUNT = 1
 ALPHA_BUFFER_COUNT = 5
 BETA_BUFFER_COUNT = 10
 # Set the size of the buffer in terms of segments. Set to unlimited if 0 or None
-MAX_BUFFER_SIZE = None
+MAX_BUFFER_SIZE = 15
 
 # ---------------------------------------------------
 # Netflix (Buffer-based) ADAPTATION
@@ -76,7 +78,7 @@ MAX_BUFFER_SIZE = None
 NETFLIX_RESERVOIR = 0.1
 NETFLIX_CUSHION = 0.9
 # Buffer Size in Number of segments 240/4
-NETFLIX_BUFFER_SIZE = 60
+NETFLIX_BUFFER_SIZE = 15
 NETFLIX_INITIAL_BUFFER = 2
 NETFLIX_INITIAL_FACTOR = 0.875
 
