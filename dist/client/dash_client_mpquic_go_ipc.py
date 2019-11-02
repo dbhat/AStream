@@ -1,16 +1,9 @@
 #!/usr/local/bin/python
 """
-Author:            Parikshit Juluri
-Contact:           pjuluri@umkc.edu
-Testing:
-    import dash_client
-    mpd_file = <MPD_FILE>
-    dash_client.playback_duration(mpd_file, 'http://198.248.242.16:8005/')
 
-    From commandline:
-    python dash_client.py -m "http://198.248.242.16:8006/media/mpd/x4ukwHdACDw.mpd" -p "all"
-    python dash_client.py -m "http://127.0.0.1:8000/media/mpd/x4ukwHdACDw.mpd" -p "basic"
-
+Author:            Divyashri Bhat
+Contact:           divyashri.bhat@gmail.com
+Base Code: https://github.com/pari685/AStream
 """
 from __future__ import division
 import hyper
